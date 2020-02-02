@@ -5,7 +5,7 @@ module.exports.tasks = async event => {
     statusCode: 200,
     body: JSON.stringify(
       {
-        message: 'Your API worked'
+        message: 'Success!'
       },
       null,
       2
