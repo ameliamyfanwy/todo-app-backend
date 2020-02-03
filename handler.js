@@ -6,10 +6,12 @@ const app = express()
 
 // when someone sends get request to tasks path - want function to fire
 // req = request, res = response
-//
+
 app.get('/tasks', function (req, res) {
-  res.send('Hello World!')
-})
+  res.json({
+    message: 'Success'
+  });
+});
 
 module.exports.tasks = serverless(app);
 
