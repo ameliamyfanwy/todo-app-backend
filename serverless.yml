@@ -14,9 +14,23 @@ functions:
           method: get
           cors: true
   create:
-    handler: handler.tasks.create
+    handler: handler.tasks
     events:
       - http:
-          path: tasks/create
+          path: tasks/task/create
           method: post
+          cors: true
+  update:
+    handler: handler.tasks
+    events:
+      - http:
+          path: tasks/task/{taskId}
+          method: put
+          cors: true
+  delete:
+    handler: handler.tasks
+    events:
+      - http:
+          path: tasks/task/{taskId}
+          method: delete
           cors: true

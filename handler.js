@@ -11,16 +11,22 @@ app.get('/tasks', function (req, res) {
   ]);
 });
 
-app.post('/tasks/create', function (req, res) {
+app.post('/tasks/task/create', function (req, res) {
   res.json({
     message: "The post endpoint works!"
   });
 });
 
-// app.put()
+app.put('/tasks/task/:taskId', function (req, res) {
+  res.json({
+    message: req.params
+  });
+});
 
-// app.delete()
+app.delete('/tasks/task/:taskId', function (req, res) {
+  res.json({
+    message: req.params
+  });
+});
 
 module.exports.tasks = serverless(app);
-module.exports.tasks.create = serverless(app);
-
