@@ -11,5 +11,16 @@ app.get('/tasks', function (req, res) {
   ]);
 });
 
+app.post('/tasks/create', function (req, res) {
+  res.json({
+    message: "The post endpoint works!"
+  });
+});
+
+// app.put()
+
+// app.delete()
+
 module.exports.tasks = serverless(app);
+module.exports.tasks.create = serverless(app);
 
