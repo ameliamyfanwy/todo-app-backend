@@ -17,20 +17,20 @@ functions:
     handler: handler.tasks
     events:
       - http:
-          path: tasks/task/create
+          path: tasks
           method: post
           cors: true
   update:
     handler: handler.tasks
     events:
       - http:
-          path: tasks/task/{taskId}
+          path: tasks/{taskId}
           method: put
           cors: true
   delete:
     handler: handler.tasks
     events:
       - http:
-          path: tasks/task/{taskId}
+          path: tasks/{taskId}
           method: delete
           cors: true

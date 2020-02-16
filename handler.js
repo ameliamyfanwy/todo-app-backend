@@ -3,29 +3,68 @@
 const serverless = require('serverless-http');
 const express = require('express');
 const app = express()
+const mysql = require('mysql');
+const uuid = require('uuid/v4');
+
+const connection = mysql.createConnection({
+  host: 'xxx',
+  user: 'xxx',
+  password: 'xxx',
+  database: 'xxx'
+});
 
 app.get('/tasks', function (req, res) {
-  res.json([
-    {id: 0, description: "adopt dog", category: "Home", completed: false},
-    {id: 1, description: "walk dog", category: "Home", completed: false}
-  ]);
-});
-
-app.post('/tasks/task/create', function (req, res) {
-  res.json({
-    message: "The post endpoint works!"
+  connection.query('SELECT * from `task`', function (error, results) {
+    if (error) {
+      console.error("Your query hit a problem", error);
+      res.status(500).json({ errorMessage: error });
+    }
+    else {
+      res.json({ todolist: results });
+    }
   });
 });
 
-app.put('/tasks/task/:taskId', function (req, res) {
-  res.json({
-    message: req.params
+app.post('/tasks/', function (req, res) {
+  connection.query('INSERT INTO task (taskId, description, category, completed, categoryId, priority) VALUES ("8b57737d-2200-4b40-ae6c-ea70276276f0", "Your task add works", "Home", 0, 1, 0)', function (error, results) {
+    if (error) {
+      console.error("Failed to add a task", error);
+      res.json({ errorMessage: error });
+    }
+    else {
+      res.json({ message: "Task successfully added" })
+      console.log("1 record inserted");
+    }
   });
 });
 
-app.delete('/tasks/task/:taskId', function (req, res) {
-  res.json({
-    message: req.params
+app.put('/tasks/:taskId', function (req, res) {
+  var taskId = req.params.taskId;
+  var sql = "UPDATE task SET completed = 1 WHERE taskId = ?";
+  connection.query(sql, taskId, function (error, results) {
+    if (error) {
+      console.error("Unable to update task", error);
+      res.json({ errorMessage: error})
+    }
+    else {
+      res.json({ message: "Task successfully updated"});
+      console.log("1 record updated");
+    }
+  });
+});
+
+app.delete('/tasks/:taskId', function (req, res) {
+  var taskId = req.params.taskId;
+  var sql = "DELETE FROM task WHERE taskId = ?"
+  connection.query(sql, taskId, function (error, results) {
+    if (error) {
+      console.error("Unable to delete task", error);
+      res.json({ errorMessage: error })
+    }
+    else {
+      res.json({ message: "Task successfully deleted" });
+      console.log("1 record deleted")
+    }
   });
 });
 
