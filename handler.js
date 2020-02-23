@@ -7,10 +7,10 @@ const mysql = require('mysql');
 const uuid = require('uuid/v4');
 
 const connection = mysql.createConnection({
-  host: 'xxx',
-  user: 'xxx',
-  password: 'xxx',
-  database: 'xxx'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_SCHEMA   
 });
 
 app.get('/tasks', function (req, res) {
@@ -33,7 +33,6 @@ app.post('/tasks/', function (req, res) {
     }
     else {
       res.json({ message: "Task successfully added" })
-      console.log("1 record inserted");
     }
   });
 });
@@ -48,7 +47,6 @@ app.put('/tasks/:taskId', function (req, res) {
     }
     else {
       res.json({ message: "Task successfully updated"});
-      console.log("1 record updated");
     }
   });
 });
@@ -63,7 +61,6 @@ app.delete('/tasks/:taskId', function (req, res) {
     }
     else {
       res.json({ message: "Task successfully deleted" });
-      console.log("1 record deleted")
     }
   });
 });
