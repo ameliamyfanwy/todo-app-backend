@@ -4,7 +4,8 @@ const serverless = require('serverless-http');
 const express = require('express');
 const app = express()
 const mysql = require('mysql');
-const uuid = require('uuid/v4');
+const uuidv4 = require('uuid/v4');
+app.use(express.json());
 
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -26,18 +27,23 @@ app.get('/tasks', function (req, res) {
 });
 
 app.post('/tasks/', function (req, res) {
-  connection.query('INSERT INTO task (taskId, description, category, completed, categoryId, priority) VALUES ("8b57737d-2200-4b40-ae6c-ea70276276f0", "Your task add works", "Home", 0, 1, 0)', function (error, results) {
+  const taskToAdd = req.body;
+  taskToAdd.taskId = uuidv4();
+  connection.query('INSERT INTO `task` SET ?', taskToAdd, function (error, results, fields) {
     if (error) {
       console.error("Failed to add a task", error);
       res.json({ errorMessage: error });
     }
     else {
-      res.json({ message: "Task successfully added" })
+      res.json({ 
+        message: "Task successfully added",
+        task: taskToAdd
+      })
     }
   });
 });
 
-app.put('/tasks/:taskId', function (req, res) {
+app.put('/tasks/D:taskId', function (req, res) {
   var taskId = req.params.taskId;
   var sql = "UPDATE task SET completed = 1 WHERE taskId = ?";
   connection.query(sql, taskId, function (error, results) {
