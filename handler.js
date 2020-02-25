@@ -43,10 +43,10 @@ app.post('/tasks/', function (req, res) {
   });
 });
 
-app.put('/tasks/D:taskId', function (req, res) {
+app.put('/tasks/:taskId', function (req, res) {
   var taskId = req.params.taskId;
-  var sql = "UPDATE task SET completed = 1 WHERE taskId = ?";
-  connection.query(sql, taskId, function (error, results) {
+  var sql = "UPDATE task SET completed = ?, priority = ? WHERE taskId = ?";
+  connection.query(sql, [req.body.completed, req.body.priority, taskId], function (error, results) {
     if (error) {
       console.error("Unable to update task", error);
       res.json({ errorMessage: error})
